@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<section id="register">
+    <div class="container px-5">
+    <form method='POST' action="/register">
+        {{ form.csrf_token }}
+        <div class="input-group mb-3">
+                                    <span class="input-group-text bg-gradient-primary-to-secondary"><i
+                                            class="bi bi-envelope text-white"></i></span>
+            {{ form.email(class_="form-control", placeholder_="E-post")}}
+        </div>
+        <div class="input-group mb-3">
+                                    <span class="input-group-text bg-gradient-primary-to-secondary"><i
+                                            class="bi bi-key-fill text-white"></i></span>
+            {{ form.password1(class_="form-control", placeholder_="Lösenord")}}
+        </div>
+        <div class="input-group mb-3">
+                                    <span class="input-group-text bg-gradient-primary-to-secondary"><i
+                                            class="bi bi-key-fill text-white"></i></span>
+            {{ form.password2(class_="form-control", placeholder_="Upprepa Lösenord")}}
+        </div>
+        <div class="d-grid col-12 mx-auto">
+            <button class="btn btn-outline-secondary" type="submit"><span></span>Registrera</button>
+        </div>
+        Jag samtycker {{ form.consent()}}
+    </form>
+    </div>
+</section>
+{% endblock %}

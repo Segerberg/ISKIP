@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link href="{{url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="{{url_for('static', filename='css/newage.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <meta charset="UTF-8">
+    <title>ISKIP</title>
+    <!-- TODO put in CSS file -->
+    <style>
+        .alert-fixed {
+            position: fixed;
+            top: 70px;
+            left: 0px;
+            width: 100%;
+
+            border-radius: 0px
+        }
+    </style>
+</head>
+<body>
+<!-- alert-warning alert-success alert-primary alert alert-danger -->
+{% block messages %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+<div class="alert-fixed">
+    <div class="alert {{ category }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+{% endblock%}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm" id="mainNav" style="">
+            <div class="container px-5">
+                <a class="navbar-brand fw-bold" href="#page-top">ISKIP</a>
+                <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="bi-list"></i>
+                </button>
+                <div class="navbar-collapse collapse" id="navbarResponsive" style="">
+                    <ul class="navbar-nav ms-auto me-4 my-3 my-lg-0">
+                        {% if current_user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link me-lg-3" href="/logout">{{ gettext('Logga ut') }}</a></li>
+                        {% else %}
+                        <li class="nav-item"><a class="nav-link me-lg-3" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">{{ gettext('Logga in') }}</a></li>
+                        {% endif %}
+                        <li class="nav-item"><a class="nav-link me-lg-3" href="#" data-bs-toggle="modal" data-bs-target="#infoModal">{{ gettext('Om') }}</a></li>
+
+                    </ul>
+                </div>
+            </div>
+
+        </nav>
+{% endblock %}
+
+
+
+{% block content %}
+{% endblock %}
+
+<!-- Modal -->
+<div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="infoModalLabel">{{ gettext('Informationssäkerhetskultur i praktiken') }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
+      </div>
+      <div class="modal-body">
+        {% block modalbody %}
+          <p>{{ gettext('Enkätundersökningen är en del av forskningsprojektet ”Informationssäkerhetskultur i praktiken".') }}</p>
+        {% endblock %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ gettext('Stäng') }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="{{url_for('static', filename='dist/js/bootstrap.bundle.min.js')}}"></script>
+
+</body>
+</html>
+
+<!-- url_for('static', filename='css/bootstrap.min.css')-->
