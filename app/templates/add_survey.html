@@ -1,0 +1,31 @@
+<div class="modal fade" id="addSurveyModal" tabindex="-1" aria-labelledby="addSurveyModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addSurveyModalLabel">Ny enkät</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
+      </div>
+      <div class="modal-body">
+                            <form method='POST' action="/surveys">
+                                {{ AddSurveyForm.csrf_token }}
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text bg-gradient-primary-to-secondary"><i
+                                            class="bi bi-envelope text-white"></i></span>
+                                    {{ AddSurveyForm.name(class_="form-control", placeholder_="Namn")}}
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text bg-gradient-primary-to-secondary"><i
+                                            class="bi bi-key-fill text-white"></i></span>
+                                    {{ AddSurveyForm.type(class_="form-control", placeholder_="Typ")}}
+                                </div>
+                                <div class="d-grid col-12 mx-auto">
+                                    <button class="btn btn-outline-secondary"  type="submit"><span></span> Spara</button>
+                                </div>
+                            </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Stäng</button>
+      </div>
+    </div>
+  </div>
+</div>

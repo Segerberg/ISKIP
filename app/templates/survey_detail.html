@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block content %}
+<section id="survey_1">
+
+    <div class="container px-5">
+        <div class="row gx-5 align-items-center">
+            <h2>Enkät</h2>
+            <div class="card" style="width: 18rem;">
+                <img src="{{url_for('static', filename='assets/Questionnaire-checklist.png')}}" style="margin-top: 1em"
+                     class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{survey}}</h5>
+                    <p class="card-text"></p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">{{ gettext('Enkäten skapades:') }} {{survey.created}}</li>
+                    <li class="list-group-item">{{ gettext('Enkäten är:') }} {% if survey.active %}{{ gettext('Öppen')
+                        }} {% else %} {{ gettext('Stängd') }} {% endif %}
+                    </li>
+                    <li class="list-group-item">{{ gettext('Antal svar:') }} {{survey.responses.count()}}</li>
+                    <li class="list-group-item"><input type="text" style="position: absolute; left: -999em;"
+                                                       value="http://127.0.0.1:5000{{url_for('survey_respond',id=survey.id)}}"
+                                                       id="survey-link">
+                        <button id="surveylink" class="btn btn-outline-primary" onclick="copyToClipboard()">
+                            <span class="tooltiptext" id="surveyTooltip">Enkätlänk</span>
+                        </button>
+                    </li>
+                </ul>
+                <div class="card-body">
+                    {% if survey.active %}
+                    <a href="#" class="btn btn-outline-danger">{{ gettext('Stäng enkät') }}</a>
+                    {% else %}
+                    <a href="#" class="btn btn-outline-success">{{ gettext('Aktivera enkät') }}</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+<section id="export_data">
+    <div class="container px-5">
+        <div class="row gx-5 align-items-center">
+            <h2>Exportera rapport</h2>
+
+            {% if survey.responses.count() == 0 %}
+            {{ gettext('Enkäten har inga svar') }}
+            {% endif %}
+        </div>
+    </div>
+
+</section>
+<script>
+    function copyToClipboard() {
+        var copyText = document.getElementById("survey-link");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999)
+        document.execCommand("copy");
+        document.getElementById("surveylink").classList.remove('btn-outline-primary');
+        document.getElementById("surveylink").classList.add('btn-success');
+        var tooltip = document.getElementById("surveyTooltip");
+        tooltip.innerHTML = "Kopierad";
+    }
+
+</script>
+{% endblock %}

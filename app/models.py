@@ -51,6 +51,9 @@ class Survey(db.Model):
     name = db.Column(db.String(128), index=True, unique=True)
     survey_id = db.Column(db.String(128))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    active = db.Column(db.Boolean)
+    type = db.Column(db.String(128)) # branch
+    created = db.Column(db.DateTime)
     responses = db.relationship('Response', backref='survey', lazy='dynamic')
 
     def __repr__(self):
@@ -59,8 +62,8 @@ class Survey(db.Model):
 class Response(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     survey_id = db.Column(db.Integer, db.ForeignKey('survey.id'))
+    created = db.Column(db.DateTime)
     data = db.Column(db.JSON)
 
-    def __repr__(self):
-        return self.id
+
 

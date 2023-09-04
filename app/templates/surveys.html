@@ -3,8 +3,35 @@
 <section id="survey_1">
     <div class="container px-5">
         <div class="row gx-5 align-items-center">
-            SURVEY MASTER
+            {% for survey in surveys %}
+            {% endfor %}
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Namn</th>
+                    <th scope="col">Typ</th>
+                    <th scope="col">Skapad</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Åtgärder</th>
+                </tr>
+                </thead>
+                <tbody>
+                 {% for survey in surveys %}
+                <tr>
+                    <td>{{survey.name}}</td>
+                    <td>{{survey.type}}</td>
+                    <td>{{survey.created}}</td>
+                    <td>{% if survey.active %}{{ gettext('Öppen') }} {% else %} {{ gettext('Stängd') }} {% endif %} </td>
+                    <td><a class="btn btn-outline-primary" href="{{url_for('survey_detail',id=survey.survey_id)}}">{{ gettext('Se detaljer') }}</a></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
         </div>
+        <a class="btn btn-outline-success float-end" href="#" data-bs-toggle="modal" data-bs-target="#addSurveyModal">{{ gettext('Skapa ny enkät') }}</a>
+
     </div>
 </section>
+{% include 'add_survey.html' %}
 {% endblock %}
