@@ -17,9 +17,9 @@
                     <li class="list-group-item">{{ gettext('Enkäten är:') }} {% if survey.active %}{{ gettext('Öppen')
                         }} {% else %} {{ gettext('Stängd') }} {% endif %}
                     </li>
-                    <li class="list-group-item">{{ gettext('Antal svar:') }} {{survey.responses.count()}}</li>
+                    <li class="list-group-item">{{ gettext('Antal svar:') }}{% if survey.responses %}{{survey.responses.count()}}{% else %}0{% endif %}</li>
                     <li class="list-group-item"><input type="text" style="position: absolute; left: -999em;"
-                                                       value="http://127.0.0.1:5000{{url_for('survey_respond',id=survey.id)}}"
+                                                       value="{{url_for('respond',survey_id=survey.id,_external=True)}}"
                                                        id="survey-link">
                         <button id="surveylink" class="btn btn-outline-primary" onclick="copyToClipboard()">
                             <span class="tooltiptext" id="surveyTooltip">Enkätlänk</span>
@@ -27,11 +27,13 @@
                     </li>
                 </ul>
                 <div class="card-body">
+                     <!--<form method="POST" action="{{url_for('respond_post',survey_id=survey_id)}}">-->
                     {% if survey.active %}
-                    <a href="#" class="btn btn-outline-danger">{{ gettext('Stäng enkät') }}</a>
+                        <input class="btn btn-outline-danger" type="submit" value="{{ gettext('Stäng enkät') }}">
                     {% else %}
-                    <a href="#" class="btn btn-outline-success">{{ gettext('Aktivera enkät') }}</a>
+                    <input class="btn btn-outline-success" type="submit" value="{{ gettext('Öppna enkät') }}">
                     {% endif %}
+                      <!-- </form>-->
                 </div>
             </div>
         </div>
@@ -42,13 +44,17 @@
     <div class="container px-5">
         <div class="row gx-5 align-items-center">
             <h2>Exportera rapport</h2>
-
+            <p>
             {% if survey.responses.count() == 0 %}
             {{ gettext('Enkäten har inga svar') }}
+            {% elif survey.responses.count() < 5  %}
+            {{ gettext('Enkäten har för få svar') }}
+            {% else %}
+            {{ gettext('Exportera') }}
             {% endif %}
+            </p>
         </div>
     </div>
-
 </section>
 <script>
     function copyToClipboard() {

@@ -1,16 +1,13 @@
 #!/usr/bin/env python
 import datetime
-import functools
 import uuid
 
 from flask import render_template, session, request, copy_current_request_context, flash, redirect, url_for, jsonify
 from app import app, db
-from app.forms import SurveyForm, RegistrationForm, LoginForm, AddSurveyForm
+from app.forms import SurveyForm, RegistrationForm, LoginForm, AddSurveyForm, ActivateSurveyForm
 from app.models import User, Survey, Response
 from flask_login import current_user, login_user, logout_user, login_required
 from app.utils import send_mail_confirmation
-import os
-import sys
 from sqlalchemy.exc import IntegrityError
 
 
@@ -41,14 +38,6 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/respond/<id>')
-@login_required
-def survey_respond(id):
-    form = SurveyForm()
-    return render_template('survey.html', form=form)
-
-
-
 @app.route('/surveys', methods=["GET", "POST"])
 @login_required
 def surveys():
@@ -71,10 +60,11 @@ def surveys():
 @app.route('/surveys/<id>')
 @login_required
 def survey_detail(id):
+    activate_survey_form = ActivateSurveyForm()
     survey = db.session.query(Survey).filter(Survey.user_id == current_user.id).filter(Survey.survey_id == id)\
         .join(Response, Response.survey_id==1).first()
 
-    return render_template('survey_detail.html', survey=survey)
+    return render_template('survey_detail.html', survey=survey, activate_survey_form=activate_survey_form)
 
 
 
@@ -113,10 +103,29 @@ def confirm_email(token):
         flash('token invalid', 'alert-danger')
         return render_template("token_invalid.html")
 
-
-@app.route('/survey_post', methods=['post'])
-def survey_post():
+@app.route('/respond/<survey_id>', methods=['GET'])
+def respond(survey_id):
     form = SurveyForm()
-    print(form.data)
-    return redirect(url_for('survey'))  # todo redirect to "Thank you"
+    return render_template('respond.html', form=form, survey_id=survey_id)
 
+@app.route('/respond_post/<survey_id>', methods=['POST'])
+def respond_post(survey_id):
+    form = SurveyForm()
+    # if form.validate_on_submit(): # todo
+    data = Response(survey_id=survey_id, created=datetime.datetime.utcnow(), data=form.data)
+    db.session.add(data)
+    db.session.commit()
+    return redirect(url_for('thankyou'))
+
+
+@app.route('/thankyou/', methods=['GET'])
+def thankyou():
+    return render_template('thankyou.html')
+
+@app.route('/report', methods=['GET'])
+def report():
+    data = {
+        "respondents": 23,
+        "group_name":"Förebildsförvaltningen"
+    }
+    return render_template('report.html', data=data)

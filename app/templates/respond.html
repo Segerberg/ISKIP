@@ -113,9 +113,10 @@
     }
 </style>
 <section id="survey_1" class="override">
+
     <div class="container px-5">
         <div class="row gx-5 align-items-center">
-            <form method="POST" action="/survey_post">
+            <form method="POST" action="{{url_for('respond_post',survey_id=survey_id)}}">
                 <div class="steps">
                     <div class="step current"></div>
                     <div class="step"></div>
@@ -546,7 +547,6 @@
                     <div class="buttons sometopmargin">
                         <a href="#" class="btn btn-outline-primary" data-set-step="3">Föregående</a>
                         <input class="btn btn-outline-success" type="submit" value="Skicka">
-
                     </div>
                 </div>
             </form>
