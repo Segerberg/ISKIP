@@ -67,6 +67,19 @@ def survey_detail(id):
 
     return render_template('survey_detail.html', survey=survey, activate_survey_form=activate_survey_form)
 
+@app.route('/toggle-survey/<id>', methods=['GET','POST'])
+@login_required
+def toggle_survey_status(id):
+    survey = db.session.query(Survey).filter(Survey.user_id == current_user.id).filter(Survey.id == id).first()
+    if survey.active:
+        survey.active = False
+        db.session.commit()
+    else:
+        survey.active = True
+        db.session.commit()
+    return redirect(url_for('survey_detail',id=id))
+
+
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
@@ -107,7 +120,7 @@ def confirm_email(token):
 @app.route('/respond/<survey_id>', methods=['GET'])
 def respond(survey_id):
     survey = db.session.query(Survey).filter(Survey.id==survey_id).first()
-    if survey:
+    if survey and survey.active:
         form = SurveyForm()
         return render_template('respond.html', form=form, survey_id=survey_id)
     return render_template('survey_error.html', survey=survey)
@@ -117,7 +130,6 @@ def respond(survey_id):
 def respond_post(survey_id):
     form = SurveyForm()
     # if form.validate_on_submit(): # todo
-
     data = Response(survey_id=survey_id, created=datetime.datetime.utcnow(), data=form.data)
     db.session.add(data)
     db.session.commit()

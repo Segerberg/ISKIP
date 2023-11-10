@@ -27,13 +27,13 @@
                     </li>
                 </ul>
                 <div class="card-body">
-                     <!--<form method="POST" action="{{url_for('respond_post',survey_id=survey_id)}}">-->
+
                     {% if survey.active %}
-                        <input class="btn btn-outline-danger" type="submit" value="{{ gettext('Stäng enkät') }}">
+                    <a href="{{url_for('toggle_survey_status',id=survey.id)}}" class="btn btn-outline-danger">{{ gettext('Stäng enkät') }}</a>
                     {% else %}
-                    <input class="btn btn-outline-success" type="submit" value="{{ gettext('Öppna enkät') }}">
+                    <a href="{{url_for('toggle_survey_status',id=survey.id)}}" class="btn btn-outline-success">{{ gettext('Öppna enkät') }}</a>
                     {% endif %}
-                      <!-- </form>-->
+
                 </div>
             </div>
         </div>
