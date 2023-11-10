@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<section>
+    <div class="container px-5">
+        <div class="row gx-5 align-items-center">
+            {%- if survey  %}
+            <h1>{{ gettext('Enkäten är stängd') }}</h1>
+            {% else %}
+            <h1>{{ gettext('Enkäten kunde inte hittas') }}</h1>
+            {% endif %}
+        </div>
+    </div>
+    {% endblock %}
+</section>

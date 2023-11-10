@@ -43,16 +43,17 @@
 <section id="export_data">
     <div class="container px-5">
         <div class="row gx-5 align-items-center">
+            {% if survey.responses %}
+            {{survey.responses}}
             <h2>Exportera rapport</h2>
             <p>
-            {% if survey.responses.count() == 0 %}
-            {{ gettext('Enkäten har inga svar') }}
-            {% elif survey.responses.count() < 5  %}
-            {{ gettext('Enkäten har för få svar') }}
-            {% else %}
-            {{ gettext('Exportera') }}
-            {% endif %}
+                {% if survey.responses.count() < 5 %}
+                {{ gettext('För få resultat') }}
+                {% else %}
+                {{ gettext('Exportera') }}
+                 {% endif %}
             </p>
+              {% endif %}
         </div>
     </div>
 </section>
@@ -60,7 +61,8 @@
     function copyToClipboard() {
         var copyText = document.getElementById("survey-link");
         copyText.select();
-        copyText.setSelectionRange(0, 99999)
+        copyText.setSelectionRange(0, 99999);
+        <!--todo Deprecated-->
         document.execCommand("copy");
         document.getElementById("surveylink").classList.remove('btn-outline-primary');
         document.getElementById("surveylink").classList.add('btn-success');

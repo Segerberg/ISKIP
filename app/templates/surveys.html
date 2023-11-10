@@ -22,7 +22,7 @@
                     <td>{{survey.type}}</td>
                     <td>{{survey.created}}</td>
                     <td>{% if survey.active %}{{ gettext('Öppen') }} {% else %} {{ gettext('Stängd') }} {% endif %} </td>
-                    <td><a class="btn btn-outline-primary" href="{{url_for('survey_detail',id=survey.survey_id)}}">{{ gettext('Se detaljer') }}</a></td>
+                    <td><a class="btn btn-outline-primary" href="{{url_for('survey_detail',id=survey.id)}}">{{ gettext('Se detaljer') }}</a></td>
                 </tr>
                 {% endfor %}
                 </tbody>

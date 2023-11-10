@@ -48,7 +48,6 @@ def surveys():
                         type=add_survey_form.type.data,
                         created=datetime.datetime.utcnow(),
                         user_id=current_user.id,
-                        survey_id=str(uuid.uuid4()),
                         active=False)
         db.session.add(survey)
         db.session.commit()
@@ -61,11 +60,12 @@ def surveys():
 @login_required
 def survey_detail(id):
     activate_survey_form = ActivateSurveyForm()
-    survey = db.session.query(Survey).filter(Survey.user_id == current_user.id).filter(Survey.survey_id == id)\
-        .join(Response, Response.survey_id==1).first()
+    survey = db.session.query(Survey).filter(Survey.user_id == current_user.id).filter(Survey.id == id)\
+        .join(Response, Response.survey_id==id).first()
+    if not survey:
+        survey = db.session.query(Survey).filter(Survey.user_id == current_user.id).filter(Survey.id == id).first()
 
     return render_template('survey_detail.html', survey=survey, activate_survey_form=activate_survey_form)
-
 
 
 @app.route('/register', methods=["GET", "POST"])
@@ -103,15 +103,21 @@ def confirm_email(token):
         flash('token invalid', 'alert-danger')
         return render_template("token_invalid.html")
 
+
 @app.route('/respond/<survey_id>', methods=['GET'])
 def respond(survey_id):
-    form = SurveyForm()
-    return render_template('respond.html', form=form, survey_id=survey_id)
+    survey = db.session.query(Survey).filter(Survey.id==survey_id).first()
+    if survey:
+        form = SurveyForm()
+        return render_template('respond.html', form=form, survey_id=survey_id)
+    return render_template('survey_error.html', survey=survey)
+
 
 @app.route('/respond_post/<survey_id>', methods=['POST'])
 def respond_post(survey_id):
     form = SurveyForm()
     # if form.validate_on_submit(): # todo
+
     data = Response(survey_id=survey_id, created=datetime.datetime.utcnow(), data=form.data)
     db.session.add(data)
     db.session.commit()
@@ -121,6 +127,7 @@ def respond_post(survey_id):
 @app.route('/thankyou/', methods=['GET'])
 def thankyou():
     return render_template('thankyou.html')
+
 
 @app.route('/report', methods=['GET'])
 def report():
