@@ -15,7 +15,7 @@ def send_mail_confirmation(user):
     mail.send(msg)
 
 def mean(lst):
-    lst = [x for x in lst if x]
+    lst = [int(x) for x in lst if x]
     try:
         return sum(lst) / len(lst)
     except ZeroDivisionError:
