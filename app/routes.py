@@ -86,7 +86,7 @@ def toggle_survey_status(id):
 
 
 @app.route('/register', methods=["GET", "POST"])
-def register():
+async def register():
     if current_user.is_authenticated:
         return redirect(url_for("index"))
 
@@ -136,7 +136,7 @@ def respond(survey_id):
 
 
 @app.route('/respond_post/<survey_id>', methods=['POST'])
-def respond_post(survey_id):
+async def respond_post(survey_id):
     form = SurveyForm()
     # if form.validate_on_submit(): # todo
     survey = db.session.query(Survey).filter(Survey.id == survey_id).first()
@@ -153,7 +153,7 @@ def thankyou():
 
 
 @app.route('/report/<survey_id>', methods=['GET'])
-def report(survey_id):
+async def report(survey_id):
     survey = db.session.query(Survey).filter(Survey.user_id == current_user.id).filter(Survey.id == survey_id)\
         .join(Response, Response.survey_id==survey_id).first()
 
