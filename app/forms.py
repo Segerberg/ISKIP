@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, RadioField, PasswordField, SubmitField, BooleanField, SelectField
+from wtforms import StringField, RadioField, PasswordField, SubmitField, BooleanField, SelectField, IntegerField
 from wtforms.validators import DataRequired, Email, EqualTo
 
 
@@ -18,6 +18,7 @@ class LoginForm(FlaskForm):
 class AddSurveyForm(FlaskForm):
     name = StringField('Namn')
     type = StringField('Branch')
+    no_participants = IntegerField('Antal deltagare')
 
 
 class ActivateSurveyForm(FlaskForm):

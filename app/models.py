@@ -54,6 +54,7 @@ class Survey(db.Model):
     active = db.Column(db.Boolean)
     type = db.Column(db.String(128)) # branch
     created = db.Column(db.DateTime)
+    no_participants = db.Column(db.Integer)
     responses = db.relationship('Response', backref='survey', lazy='dynamic')
 
     def __repr__(self):

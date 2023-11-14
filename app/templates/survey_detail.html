@@ -18,6 +18,7 @@
                         }} {% else %} {{ gettext('Stängd') }} {% endif %}
                     </li>
                     <li class="list-group-item">{{ gettext('Antal svar:') }}{% if survey.responses %}{{survey.responses.count()}}{% else %}0{% endif %}</li>
+                   {% if survey.no_participants %} <li class="list-group-item">{{ gettext('Svarsfrekvens:') }} {{(survey.responses.count() / survey.no_participants * 100) | round | int }} %</li> {% endif %}
                     <li class="list-group-item"><a class="btn btn-outline-primary" href="{{url_for('preview',survey_id=survey.id)}}">Förhandsgranska enkät</a></li>
                     <li class="list-group-item"><input type="text" style="position: absolute; left: -999em;"
                                                        value="{{url_for('respond',survey_id=survey.id,_external=True)}}"

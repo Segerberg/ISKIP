@@ -51,6 +51,7 @@ def surveys():
                         type=add_survey_form.type.data,
                         created=datetime.datetime.utcnow(),
                         user_id=current_user.id,
+                        no_participants=add_survey_form.no_participants.data,
                         active=False)
         db.session.add(survey)
         db.session.commit()
@@ -209,6 +210,7 @@ async def report(survey_id):
 
     data = {
         "respondents": survey.responses.count(),
+        "no_participants": survey.no_participants,
         "group_name":survey.name,
         "L_Prioritet":L_Prioritet,
         "L_Involvering":L_Involvering,

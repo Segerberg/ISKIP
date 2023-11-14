@@ -84,7 +84,11 @@ I ett tidigare forskningsprojekt har vår forskargrupp utvecklat ett enkätinstr
 Det finns även en kolumn i tabellen som visar samstämmigheten i svaren. När det är en levande fråga som diskuteras mycket på arbetsplatsen brukar det resultera i en hög samstämmighet. Omvänt så kan en låg samstämmighet tyda på att ämnet inte diskuteras så mycket. Vid låg samstämmighet eller låg svarsfrekvens så behöver resultatet tolkas med försiktighet.
 </p>
 <h4>Resultat för {{data.group_name}} jämfört ett representativt urval tjänstepersoner i Sverige </h4>
-<p>Antal svarande: {{data.respondents}}</p>
+{% if data.no_participants %}
+<p>Antal svarande: {{data.respondents}} (av {{data.no_participants}}) Svarsfrekvens {{(data.respondents / data.no_participants * 100) | round | int }}% </p>
+{% else %}
+<p>Antal svarande: {{data.respondents}} </p>
+{% endif %}
 <img src="data:image/png;base64,{{b64}}">
 <table>
     <thead>
