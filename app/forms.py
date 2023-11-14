@@ -24,7 +24,6 @@ class ActivateSurveyForm(FlaskForm):
     active = BooleanField('active')
 
 class SurveyForm(FlaskForm):
-    # A1  A2  A7  A8  A11    B3  B4  B8  B10  B11  B12  B15  B16
     q1a = RadioField('a)', choices=[(6, "Stämmer inte alls"), (5, 'Stämmer mycket dåligt'),
                                                                  (4, 'Stämmer ganska dåligt'),
                                                                  (3, 'Stämmer ganska bra'),
