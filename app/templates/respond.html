@@ -116,7 +116,11 @@
 
     <div class="container px-5">
         <div class="row gx-5 align-items-center">
+            {%- if preview %}
+            <form method="POST" action="#">
+            {%- else %}
             <form method="POST" action="{{url_for('respond_post',survey_id=survey_id)}}">
+            {%- endif %}
                 <div class="steps">
                     <div class="step current"></div>
                     <div class="step"></div>
@@ -546,7 +550,11 @@
 
                     <div class="buttons sometopmargin">
                         <a href="#" class="btn btn-outline-primary" data-set-step="3">Föregående</a>
+                        {% if preview %}
+                        <input class="btn btn-outline-success" disabled value="Skicka">
+                        {% else %}
                         <input class="btn btn-outline-success" type="submit" value="Skicka">
+                        {% endif %}
                     </div>
                 </div>
             </form>

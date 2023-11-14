@@ -120,13 +120,18 @@ def confirm_email(token):
         flash('token invalid', 'alert-danger')
         return render_template("token_invalid.html")
 
+@app.route('/preview/<survey_id>', methods=['GET'])
+def preview(survey_id):
+    form = SurveyForm()
+    flash("Detta är en Förhandsgranskning, dina svar kommer inte att sparas", "alert-info")
+    return render_template('respond.html', form=form, survey_id=survey_id, preview=True)
 
 @app.route('/respond/<survey_id>', methods=['GET'])
 def respond(survey_id):
     survey = db.session.query(Survey).filter(Survey.id==survey_id).first()
     if survey and survey.active:
         form = SurveyForm()
-        return render_template('respond.html', form=form, survey_id=survey_id)
+        return render_template('respond.html', form=form, survey_id=survey_id, preview=False)
     return render_template('survey_error.html', survey=survey)
 
 
@@ -145,7 +150,6 @@ def respond_post(survey_id):
 @app.route('/thankyou/', methods=['GET'])
 def thankyou():
     return render_template('thankyou.html')
-
 
 
 @app.route('/report/<survey_id>', methods=['GET'])
