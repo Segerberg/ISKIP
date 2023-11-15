@@ -1,0 +1,55 @@
+<div class="modal fade" id="addSurveyModal" tabindex="-1" aria-labelledby="addSurveyModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+         <form method='POST' action="/surveys">
+      <div class="modal-header">
+        <h4 class="modal-title" id="addSurveyModalLabel">Skapa ny enkät</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
+      </div>
+
+      <div class="modal-body">
+                                {{ AddSurveyForm.csrf_token }}
+          <h6>Namn på enkät</h6>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text bg-gradient-primary-to-secondary"><i
+                                            class="bi bi-key-fill text-white"></i></span>
+                                    {{ AddSurveyForm.name(class_="form-control", placeholder_="Enkätnamn")}}
+                                </div>
+        <h6>Antal deltagare enkäten ska distribueras till</h6>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text bg-gradient-primary-to-secondary"><i
+                                            class="bi bi-key-fill text-white"></i></span>
+                                    {{ AddSurveyForm.no_participants(class_="form-control", placeholder_="Antal deltagare")}}
+                                </div>
+          <h6>Den näringsgren undersökningsgruppen närmast hör till</h6>
+              <div class="input-group mb-3">
+
+                                    <div class="d-grid col-6 mx-auto">
+                                    {% for item in AddSurveyForm.type %}
+                                     {% if loop.index <= loop.length // 2 %}
+                                    <span style="margin-top: 5px">{{item}} {{item.label.text|safe}}</span>
+                                    {% endif %}
+                                    {% endfor %}
+                                    </div>
+                                    <div class="d-grid col-6 mx-auto">
+                                    {% for item in AddSurveyForm.type %}
+                                     {% if loop.index > loop.length // 2 %}
+                                    <span style="margin-top: 5px">{{item}} {{item.label.text|safe}}</span>
+                                    {% endif %}
+                                    {% endfor %}
+                                    </div>
+              </div>
+
+      </div>
+
+
+      <div class="modal-footer">
+
+                                    <button class="btn btn-outline-success"  type="submit"><span></span> Spara</button>
+
+        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Stäng</button>
+      </div>
+         </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,586 @@
+{% extends "base.html" %}
+{% block content %}
+<!-- TODO put in CSS file -->
+<style>
+    .steps {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        width: calc(100% - 35px);
+        align-self: center;
+        margin: 0 auto;
+    }
+
+    .steps::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background-color: #f2f4f7;
+        margin: auto 0;
+        top: 0;
+        bottom: 0;
+        z-index: 0;
+    }
+
+    .steps .step {
+        width: 25px;
+        height: 25px;
+        background-color: #f2f4f7;
+        border: 3px solid #f2f4f7;
+        border-radius: 50px;
+
+        z-index: 1;
+    }
+
+    .steps .step.current {
+        background-color: #8cc6f2;
+    }
+
+    .steps .step.complete {
+        background-color: #6ECBA4;
+    }
+    .sometopmargin {
+        margin-top: 5px;
+    }
+
+</style>
+<style>
+
+    @media only screen and (max-width: 768px) {
+        .override .res-tbl {
+            border: 0;
+            border-collapse: collapse;
+        }
+
+        .override .res-tbl, .override .res-tbl thead, .override .res-tbl tbody, .override .res-tbl th, .override .res-tbl td, .override .res-tbl tr {
+            display: block;
+        }
+
+        .override .res-tbl thead tr {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+            overflow: hidden;
+        }
+
+        .override .res-tbl tbody tr {
+            margin: 0 0 15px 0;
+            display: flex;
+            flex-flow: column;
+            border: 1px solid #ddd;
+            border-bottom: 0;
+        }
+
+        .override .res-tbl tbody tr:nth-child(odd) {
+        }
+
+        .override .res-tbl tbody tr:nth-child(even) {
+        }
+
+        .override .res-tbl tr td {
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            border-bottom: 1px solid #ddd;
+            position: relative;
+            padding-left: 40%;
+            word-wrap: break-word;
+            text-align: center
+        }
+
+        .override .res-tbl tr td: last-child {
+            border-bottom: none;
+        }
+
+        .override .res-tbl tr td:first-child {
+            border-top: 1px solid #ddd;
+        }
+
+        .override .res-tbl td:before {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            width: 55%;
+            padding-right: 10px;
+            white-space: nowrap;
+            content: attr(data-label);
+            text-align: left;
+        }
+    }
+</style>
+<section id="survey_1" class="override">
+
+    <div class="container px-5">
+        <div class="row gx-5 align-items-center">
+            {%- if preview %}
+            <form method="POST" action="#">
+            {%- else %}
+            <form method="POST" action="{{url_for('respond_post',survey_id=survey_id)}}">
+            {%- endif %}
+                <div class="steps">
+                    <div class="step current"></div>
+                    <div class="step"></div>
+                    <div class="step"></div>
+                    <div class="step"></div>
+                </div>
+                {{ form.csrf_token }}
+                <div class="step-content" data-step="1">
+                    <h3>A. I följande avsnitt anger du hur du uppfattar att chefer och arbetsledare på den här
+                        arbetsplatsen hanterar informationssäkerhet.</h3>
+
+                    <table class="table mb-0 res-tbl">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>Stämmer inte alls</th>
+                            <th>Stämmer mycket dåligt</th>
+                            <th>Stämmer ganska dåligt</th>
+                            <th>Stämmer ganska bra</th>
+                            <th>Stämmer mycket bra</th>
+                            <th>Stämmer fullständigt</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+
+                            <td><strong>{{form.q1a.label}}</strong> Ledningen ser åt ett annat håll när det slarvas med
+                                informationssäkerheten
+                            </td>
+                            {% for item in form.q1a %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td><strong>{{form.q1b.label}}</strong> Ledningen accepterar att medarbetare slarvar med
+                                informationssäkerheten när
+                                tidsschemat är pressat
+                            </td>
+                            {% for item in form.q1b %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td><strong>{{form.q1c.label}}</strong> Ledningen ser till att informationssäkerhetsbrister
+                                som upptäcks korrigeras omedelbart
+                            </td>
+                            {% for item in form.q1c %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td><strong>{{form.q1d.label}}</strong> På den här arbetsplatsen visar ledningen
+                                uppskattning om man är noga med informationssäkerheten, även om det innebär att arbetet
+                                fördröjs.
+                            </td>
+                            {% for item in form.q1d %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td><strong>{{form.q1e.label}}</strong> Ledningen försöker utforma
+                                informationssäkerhetsbestämmelser som är meningsfulla och som verkligen fungerar i
+                                praktiken
+                            </td>
+                            {% for item in form.q1e %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td><strong>{{form.q1f.label}}</strong> Ledningen uppmuntrar medarbetarna att delta i
+                                utformningen av informationssäkerhetsbestämmelser.
+                            </td>
+                            {% for item in form.q1f %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td><strong>{{form.q1g.label}}</strong> Ledningen frågar aldrig efter medarbetarnas åsikter
+                                innan den fattar beslut som rör informationssäkerhetsbestämmelser.
+                            </td>
+                            {% for item in form.q1g %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td><strong>{{form.q1h.label}}</strong> Rädsla för negativa konsekvenser från ledningen
+                                avskräcker medarbetarna från att påtala brister i hanteringen av informationssäkerhet.
+                            </td>
+                            {% for item in form.q1h %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td><strong>{{form.q1i.label}}</strong> Ledningen lyssnar noga på den som har varit
+                                inblandad i en händelse där informationssäkerheten blivit hotad eller kunnat bli hotad.
+                            </td>
+                            {% for item in form.q1i %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td><strong>{{form.q1j.label}}</strong> Ledningen söker orsaker i rutiner och system, inte
+                                skyldiga personer, när en informationssäkerhetsavvikelse inträffar.
+                            </td>
+                            {% for item in form.q1j %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td><strong>{{form.q1k.label}}</strong> Ledningen lägger alltid skulden för
+                                informationssäkerhetsavvikelser på de anställda.
+                            </td>
+                            {% for item in form.q1k %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+
+                        </tbody>
+                    </table>
+                    <div class="buttons">
+                        <a href="#" class="btn btn-outline-primary" data-set-step="2">Nästa</a>
+                    </div>
+                </div>
+                <div class="step-content" data-step="2">
+                    <h3>B Hur förhåller sig <u>personer i din arbetsgrupp</u> till informationssäkerhet? <br><br>I den
+                        här
+                        arbetsgruppen…
+                    </h3>
+                    <table class="table mb-0 res-tbl">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>Stämmer inte alls</th>
+                            <th>Stämmer mycket dåligt</th>
+                            <th>Stämmer ganska dåligt</th>
+                            <th>Stämmer ganska bra</th>
+                            <th>Stämmer mycket bra</th>
+                            <th>Stämmer fullständigt</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><strong>{{form.q2a.label}}</strong> ...tar man gemensamt ansvar för att
+                                informationssäkerhetsbestämmelserna upprätthålls.
+                            </td>
+                            {% for item in form.q2a %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td><strong>{{form.q2b.label}}</strong> ...påminner man varandra att följa
+                                informationssäkerhetsbestämmelserna.
+                            </td>
+                            {% for item in form.q2b %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+
+                        <tr>
+                            <td><strong>{{form.q2c.label}}</strong> ...undviker man att blanda sig i hur kollegor sköter
+                                informationssäkerheten.
+                                {% for item in form.q2c %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+
+                        <tr>
+                            <td><strong>{{form.q2d.label}}</strong> ...accepterar man att kollegor slarvar med
+                                informationssäkerheten.
+                            </td>
+                            {% for item in form.q2d %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+
+                        <tr>
+                            <td><strong>{{form.q2e.label}}</strong> ...försöker man finna en lösning om någon påpekar en
+                                brist i informationssäkerheten.
+                            </td>
+                            {% for item in form.q2e %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+
+                        <tr>
+                            <td><strong>{{form.q2f.label}}</strong> ...lär man av sina erfarenheter för att förebygga
+                                informationssäkerhetsavvikelser.
+                            </td>
+                            {% for item in form.q2f %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+
+                        <tr>
+                            <td><strong>{{form.q2g.label}}</strong> ...tar man varandras synpunkter och förslag rörande
+                                informationssäkerhet på allvar.
+                            </td>
+                            {% for item in form.q2g %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td><strong>{{form.q2h.label}}</strong> ...talar man sällan om informationssäkerhet.
+                            </td>
+                            {% for item in form.q2h %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+
+                        <tr>
+                            <td><strong>{{form.q2i.label}}</strong> ...anser man att det bästa sättet att skapa hög
+                                informationssäkerhet är genom tydliga informationssäkerhetsbestämmelser.
+                            </td>
+                            {% for item in form.q2i %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+
+                        <tr>
+                            <td><strong>{{form.q2j.label}}</strong> ...tycker man att det är jobbigt med personer som är
+                                alltför noga med att följa informationssäkerhetsbestämmelserna.
+                            </td>
+                            {% for item in form.q2j %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+
+                        <tr>
+                            <td><strong>{{form.q2k.label}}</strong> ...anser man att åtgärder för att förhindra obehörig
+                                åtkomst till information krånglar till arbetet mer än de gör verklig nytta.
+                            </td>
+                            {% for item in form.q2k %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+
+                        <tr>
+                            <td><strong>{{form.q2l.label}}</strong> ...finns bestämmelser för informationssäkerhet mest
+                                för syns skull, för ingen tror egentligen på nyttan.
+                            </td>
+                            {% for item in form.q2l %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+
+                        <tr>
+                            <td><strong>{{form.q2m.label}}</strong> ...är man överens om att det finns en verklig
+                                hotbild mot våra IT-system.
+                            </td>
+                            {% for item in form.q2m %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+
+                        <tr>
+                            <td><strong>{{form.q2n.label}}</strong> ...tycker man det är viktigt att vara vaksamma mot
+                                nya hot mot informationen
+                            </td>
+                            {% for item in form.q2n %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+
+                        <tr>
+                            <td><strong>{{form.q2o.label}}</strong> ...anser man att risken för dataintrång är betydligt
+                                överdriven
+                            </td>
+                            {% for item in form.q2o %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+
+                        <tr>
+                            <td><strong>{{form.q2p.label}}</strong> ...anser man att risken för hot mot informationen
+                                från oväntade håll är mycket liten
+                            </td>
+                            {% for item in form.q2p %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+
+
+                        </tbody>
+                    </table>
+                    <div class="buttons">
+                        <a href="#" class="btn btn-outline-primary" data-set-step="1">Föregående</a>
+                        <a href="#" class="btn btn-outline-primary" data-set-step="3">Nästa</a>
+                    </div>
+                </div>
+                <div class="step-content" data-step="3">
+                    <h3>C Hur förhåller du dig till informationssäkerhet <u>i ditt arbete</u>?</h3>
+
+                    <table class="table mb-0 res-tbl">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>Aldrig</th>
+                            <th>Nästan aldrig</th>
+                            <th>Sällan</th>
+                            <th>Ibland</th>
+                            <th>Ofta</th>
+                            <th>Nästan alltid</th>
+                            <th>Alltid</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><strong>{{form.q3a.label}}</strong> Jag gör vad jag kan för att stödja
+                                informationssäkerhetsarbetet på min arbetsplats.
+                            </td>
+                            {% for item in form.q3a %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td><strong>{{form.q3b.label}}</strong> Jag anstränger mig extra för att förbättra
+                                informationssäkerheten på arbetsplatsen.
+                            </td>
+                            {% for item in form.q3b %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td><strong>{{form.q3c.label}}</strong> Jag åtar mig frivilligt uppgifter för att hjälpa
+                                till att förbättra informationssäkerheten på arbetsplatsen.
+                            </td>
+                            {% for item in form.q3c %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td><strong>{{form.q3d.label}}</strong> Jag använder alla nödvändiga
+                                informationssäkerhetsåtgärder i mitt arbete.
+                            </td>
+                            {% for item in form.q3d %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td><strong>{{form.q3e.label}}</strong> Jag följer informationssäkerhetsinstruktionerna i
+                                mitt arbete.
+                            </td>
+                            {% for item in form.q3e %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td><strong>{{form.q3f.label}}</strong> Jag ser till att hålla högsta möjliga
+                                informationssäkerhetsnivå i mitt arbete.
+                            </td>
+                            {% for item in form.q3f %}
+                            <td data-label="{{item.label.text|safe}}">{{item|safe}}</td>
+                            {% endfor %}
+                        </tr>
+
+
+                        </tbody>
+
+                    </table>
+                    <div class="buttons">
+                        <a href="#" class="btn btn-outline-primary" data-set-step="2">Föregående</a>
+                        <a href="#" class="btn btn-outline-primary" data-set-step="4">Nästa</a>
+                    </div>
+                </div>
+                <div class="step-content" data-step="4">
+                    <h3>D Frågor om din bakgrund</h3>
+
+                    <div class="form-horizontal">
+                        <div class="form-group form-inline">
+                            <strong><label for="{{form.q4a.id}}">{{form.q4a.label}}</label></strong>
+                                        <select class="form-control" id="{{form.q4a.id}}" name="{{form.q4a.name}}">
+                                {% for option in form.q4a %}
+                                {% if loop.first %}
+                                <option value="" disabled selected>Välj...</option>
+                                {% else %}
+                                {{option}}
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                            <strong><label for="{{form.q4b.id}}">{{form.q4b.label}}</label></strong>
+
+                            <select class="form-control" id="{{form.q4b.id}}" name="{{form.q4b.name}}">
+                                {% for option in form.q4b %}
+                                {% if loop.first %}
+                                <option value="" disabled selected>Välj...</option>
+                                {% else %}
+                                {{option}}
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+
+                            <strong><label for="{{form.q4c.id}}">{{form.q4c.label}}</label></strong>
+
+                            <select class="form-control" id="{{form.q4c.id}}" name="{{form.q4c.name}}">
+                                {% for option in form.q4c %}
+                                {% if loop.first %}
+                                <option value="" disabled selected>Välj...</option>
+                                {% else %}
+                                {{option}}
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                            <strong><label for="{{form.q4d.id}}">{{form.q4d.label}}</label></strong>
+
+                            <select class="form-control" id="{{form.q4d.id}}" name="{{form.q4d.name}}">
+                                {% for option in form.q4d %}
+                                {% if loop.first %}
+                                <option value="" disabled selected>Välj...</option>
+                                {% else %}
+                                {{option}}
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                            <strong><label for="{{form.q4e.id}}">{{form.q4e.label}}</label></strong>
+
+                            <select class="form-control" id="{{form.q4e.id}}" name="{{form.q4e.name}}">
+                                {% for option in form.q4e %}
+                                {% if loop.first %}
+                                <option value="" disabled selected>Välj...</option>
+                                {% else %}
+                                {{option}}
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="buttons sometopmargin">
+                        <a href="#" class="btn btn-outline-primary" data-set-step="3">Föregående</a>
+                        {% if preview %}
+                        <input class="btn btn-outline-success" disabled value="Skicka">
+                        {% else %}
+                        <input class="btn btn-outline-success" type="submit" value="Skicka">
+                        {% endif %}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<!--TODO put in .js file-->
+<script>
+    const setStep = step => {
+        document.querySelectorAll(".step-content").forEach(element => element.style.display = "none");
+        document.querySelector("[data-step='" + step + "']").style.display = "block";
+        document.querySelectorAll(".steps .step").forEach((element, index) => {
+            index < step - 1 ? element.classList.add("complete") : element.classList.remove("complete");
+            index == step - 1 ? element.classList.add("current") : element.classList.remove("current");
+        });
+    };
+    document.querySelectorAll("[data-set-step]").forEach(element => {
+        element.onclick = event => {
+            event.preventDefault();
+            setStep(parseInt(element.dataset.setStep));
+        };
+    });
+    setStep(1);
+</script>
+{% endblock %}
+
+{% block modalbody %}
+<p>Enkätundersökningen är en del av forskningsprojektet ”Informationssäkerhetskultur i praktiken”.</p>
+{% endblock %}

@@ -2,12 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Confirm your mail</title>
+    <title>Bekräfta din epost</title>
 </head>
 <body>
-<h1>Confirm your mail</h1>
-{{url_for('index')}}/{{token}}
-<a href="{{url_for('index')}}/{{token}}">klicka här</a>
-
+<h1>ISKIP-Mäta</h1>
+<h3>Vänligen klicka på länken för att aktivera ditt konto</h3>
+<a href="{{baseurl}}}/confirm-email/{{token}}">{{baseurl}}/confirm-email/{{token}}</a>
 </body>
 </html>

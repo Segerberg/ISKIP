@@ -5,6 +5,7 @@ from itsdangerous import SignatureExpired, BadSignature
 from itsdangerous.url_safe import URLSafeTimedSerializer
 from flask_login import UserMixin
 from app import login
+import uuid
 
 
 @login.user_loader
@@ -47,10 +48,13 @@ class User(UserMixin, db.Model):
 
 
 class Survey(db.Model):
-    id = db.Column(db.Integer,primary_key=True)
+    id = db.Column(db.String,primary_key=True, default=lambda: str(uuid.uuid4()))
     name = db.Column(db.String(128), index=True, unique=True)
-    survey_id = db.Column(db.String(128))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    active = db.Column(db.Boolean)
+    type = db.Column(db.String(128)) # branch
+    created = db.Column(db.DateTime)
+    no_participants = db.Column(db.Integer)
     responses = db.relationship('Response', backref='survey', lazy='dynamic')
 
     def __repr__(self):
@@ -59,8 +63,8 @@ class Survey(db.Model):
 class Response(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     survey_id = db.Column(db.Integer, db.ForeignKey('survey.id'))
+    created = db.Column(db.DateTime)
     data = db.Column(db.JSON)
 
-    def __repr__(self):
-        return self.id
+
 
