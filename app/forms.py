@@ -17,7 +17,28 @@ class LoginForm(FlaskForm):
 
 class AddSurveyForm(FlaskForm):
     name = StringField('Namn')
-    type = StringField('Branch')
+    type = RadioField('Näringsgren',choices=[(1, "Jordbruk, skogsbruk och fiske"),
+(2, "Fastighetsverksamhet (handel, förmedling uthyrning och förvaltning av fastigheter"),
+(3,"Utvinning av kol, petroleum, gas, metall och mineral"),
+(4,"Verksamhet och konsulttjänster inom juridik, ekonomi, vetenskap och teknik"),
+(5,"Tillverkningsindustri, tillverkning av varor och produkter"),
+(6,"Uthyrning av maskiner fordon, personal, bevakning, resebyrå-, kontorstjänster och andra stödtjänster till företag"),
+(7,"Försörjning av el, gas, värme och kyla"),
+(8,"Offentlig förvaltning (stat, region, kommun) inklusive socialförsäkring"),
+(9,"Vatten & avlopp, avfallshantering"),
+(10,"Försvar, polis, rättsväsende, kriminalvård"),
+(11,"Bygg- och anläggningsverksamhet"),
+(12,"Utbildning (förskola, grundskola, gymnasium, eftergymnasial, högskola)"),
+(13,"Handel (inkluderar även försäljning och reparation av motorfordon)"),
+(14,"Hälso- och sjukvård, omsorg och sociala tjänster"),
+(15,"Transporter (väg, järnväg, sjö och flyg) och magasinering"),
+(16,"Kultur, nöje och fritid"),
+(17,"Hotell- och restaurangverksamhet"),
+(18,"Förvärvsarbete i hushåll och serviceverksamhet till hushåll"),
+(19,"IT-, informations- och kommunikationsverksamhet"),
+(20,"Internationella organisationer, ambassader"),
+(21,"Finans- och försäkringsverksamhet"),
+(22,"Annan typ av verksamhet")])
     no_participants = IntegerField('Antal deltagare')
 
 
