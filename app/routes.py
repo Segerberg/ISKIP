@@ -14,6 +14,14 @@ from sqlalchemy.exc import IntegrityError
 from werkzeug.utils import secure_filename
 
 
+def format_date(value, format="%Y-%m-%d %H:%M:%S"):
+    if value is None:
+        return ""
+    return value.strftime(format)
+
+app.jinja_env.filters['format_date'] = format_date
+
+
 @app.route('/')
 def index():
     login_form = LoginForm()
@@ -106,7 +114,7 @@ async def register():
     return render_template("register.html", form=form)
 
 
-@app.route("/confirm_email/<token>")
+@app.route("/confirm-email/<token>")
 def confirm_email(token):
     email = User.verify_mail_confirm_token(token)
 

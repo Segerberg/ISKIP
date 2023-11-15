@@ -9,7 +9,6 @@
                 <thead>
                 <tr>
                     <th scope="col">Namn</th>
-                    <th scope="col">Typ</th>
                     <th scope="col">Skapad</th>
                     <th scope="col">Status</th>
                     <th scope="col">Åtgärder</th>
@@ -18,9 +17,8 @@
                 <tbody>
                  {% for survey in surveys %}
                 <tr>
-                    <td>{{survey.name}}</td>
-                    <td>{{survey.type}}</td>
-                    <td>{{survey.created}}</td>
+                    <td><a style="text-decoration: none; color: inherit;" href="{{url_for('survey_detail',id=survey.id)}}">{{survey.name}}</a></td>
+                    <td>{{survey.created|format_date}}</td>
                     <td>{% if survey.active %}{{ gettext('Öppen') }} {% else %} {{ gettext('Stängd') }} {% endif %} </td>
                     <td><a class="btn btn-outline-primary" href="{{url_for('survey_detail',id=survey.id)}}">{{ gettext('Se detaljer') }}</a></td>
                 </tr>
